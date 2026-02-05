@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: makegraphitics
+Version: 0.2
+Summary: Library to build graphene and graphite based structures
+Home-page: https://github.com/velocirobbie/make-graphitics
+Author: Robert C Sinclair
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: summary

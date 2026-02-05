@@ -1,5 +1,5 @@
-from lattice import Lattice
-from connector import Connector
+from .lattice import Lattice
+from .connector import Connector
 import numpy as np
 import os
 import yaml
@@ -45,7 +45,7 @@ class Sim(object):
     def generate_bond_graph(self, bonds):
         N = int(np.amax(bonds))  # Number of atoms
         bond_graph = dict()
-        for i in xrange(N):
+        for i in range(N):
             bond_graph[i] = set()
 
         for bond in bonds:
@@ -62,8 +62,8 @@ class Sim(object):
             if hasattr(self, attr):
                 assert len(getattr(self, attr)) == n_atoms, attr
         if abs(np.sum(self.atom_charges)) > 0.01:
-            print "WARNING: charges do not sum to zero",\
-                  np.sum(self.atom_charges)
+            print("WARNING: charges do not sum to zero")
+            np.sum(self.atom_charges)
 
     def crystal_params(self):
         path = os.path.dirname(__file__) + "/params/"

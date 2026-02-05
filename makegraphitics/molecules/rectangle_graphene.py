@@ -1,6 +1,6 @@
 from math import pi, cos, sin
 import numpy as np
-from base import Molecule
+from .base import Molecule
 
 
 class Rectangle_Graphene(Molecule):
@@ -143,7 +143,7 @@ class Rectangle_Graphene(Molecule):
         firstrow = 3 + 4 * self.x
         a = 3 + 3 * self.x  # even rows
         b = 2 + 3 * self.x  # odd rows
-        nbonds = firstrow + a * ((self.y - 1) / 2) + b * ((self.y + 1) / 2)
+        nbonds = firstrow + a * int(((self.y - 1) / 2) + b * ((self.y + 1) / 2))
         bonds = np.empty((nbonds, 2), dtype=int)
 
         global bond

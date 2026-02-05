@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from opls_reader import OPLS_Reader
+from .opls_reader import OPLS_Reader
 
 
 class Parameterise(object):
@@ -27,8 +27,8 @@ class Parameterise(object):
             self.type_defs[label] = self.vdw_type["type"][
                 self.vdw_type["vdw"].index(vdw)
             ]
-        print "Atom label -> OPLS vdw definitions: \t", self.vdw_defs
-        print "Atom label -> OPLS type definitions: \t", self.type_defs
+        print("Atom label -> OPLS vdw definitions: \t", self.vdw_defs)
+        print("Atom label -> OPLS type definitions: \t", self.type_defs)
 
         try:
             crystal.bond_types, crystal.angle_types, crystal.dihedral_types, crystal.improper_types
@@ -139,7 +139,7 @@ class Parameterise(object):
             a2 = self.type_defs[angle_types[i][1]]
             a3 = self.type_defs[angle_types[i][2]]
             atoms = [a1, a2, a3]
-            # print atoms, angle_types[i]
+            # print(atoms, angle_types[i])
             angle_coeffs, found = search_angles(angle_data, atoms, angle_coeffs)
 
             if found == 0:
@@ -150,7 +150,7 @@ class Parameterise(object):
                         atoms[j] = 46  # Try alkene H
                 angle_coeffs, found = search_angles(angle_data, atoms, angle_coeffs)
                 if found == 1:
-                    print found, [a1, a2, a3], atoms, "sub aromatic -> alkene"
+                    print(found, [a1, a2, a3], atoms, "sub aromatic -> alkene")
             if found == 0:
                 if atoms[1] == 47:
                     if atoms[0] == 13:
@@ -159,12 +159,12 @@ class Parameterise(object):
                         atoms[0] = 47
                     angle_coeffs, found = search_angles(angle_data, atoms, angle_coeffs)
                     if found == 0:
-                        print found, [a1, a2, a3], atoms, "made 13 -> 47 sub"
+                        print(found, [a1, a2, a3], atoms, "made 13 -> 47 sub")
             if found != 1:
                 raise ValueError("WRONG", atoms, "\t found ", found, " entries")
-                # print 'WRONG',atoms,'\t found ',found,' entries'
+                # print('WRONG',atoms,'\t found ',found,' entries')
         if questionable_substitutions != 0:
-            print "made ", questionable_substitutions, " questionable angle subs"
+            print("made #", questionable_substitutions, " questionable angle subs")
         return angle_coeffs
 
     def match_dihedrals(self, dihedral_types):
@@ -237,7 +237,7 @@ class Parameterise(object):
             a3 = self.type_defs[dihedral_types[i][2]]
             a4 = self.type_defs[dihedral_types[i][3]]
             atoms = [a1, a2, a3, a4]
-            # print atoms
+            # print(atoms)
 
             dihedral_coeffs, found = search_dihedrals(
                 dihedral_data, atoms, dihedral_coeffs
@@ -263,7 +263,7 @@ class Parameterise(object):
                     dihedral_data, atoms, dihedral_coeffs
                 )
                 if found != 0:
-                    print found, [a1, a2, a3, a4], atoms, "made 5 -> 46 sub"
+                    print(found, [a1, a2, a3, a4], atoms, "made 5 -> 46 sub")
 
             if found == 0:
                 if atoms[1:4] == [13, 47, 3] or atoms[0:3] == [3, 47, 13]:
@@ -272,7 +272,7 @@ class Parameterise(object):
                         dihedral_data, atoms, dihedral_coeffs
                     )
                 if found != 0:
-                    print found, [a1, a2, a3, a4], atoms, "made 13,47,47 sub"
+                    print(found, [a1, a2, a3, a4], atoms, "made 13,47,47 sub")
 
             if found == 0:
                 if atoms[1] == 13 and atoms[2] == 13:
@@ -284,7 +284,7 @@ class Parameterise(object):
                         dihedral_data, atoms, dihedral_coeffs
                     )
                     if found != 0:
-                        print found, [a1, a2, a3, a4], atoms, "sub 47 -> 3"
+                        print(found, [a1, a2, a3, a4], atoms, "sub 47 -> 3")
 
             if found == 0:
                 if atoms == [13, 47, 5, 7] or atoms == [7, 5, 47, 13]:
@@ -293,7 +293,7 @@ class Parameterise(object):
                         dihedral_data, atoms, dihedral_coeffs
                     )
                     if found != 0:
-                        print found, [a1, a2, a3, a4], atoms, "made phenol sub"
+                        print(found, [a1, a2, a3, a4], atoms, "made phenol sub")
 
             if found == 0:
                 if atoms == [47, 47, 3, 52] or atoms == [52, 3, 47, 47]:
@@ -302,16 +302,16 @@ class Parameterise(object):
                         dihedral_data, atoms, dihedral_coeffs
                     )
                     if found != 0:
-                        print found, [a1, a2, a3, a4], atoms, "made carboxylate sub"
+                        print(found, [a1, a2, a3, a4], atoms, "made carboxylate sub")
 
 
             if found != 1:
                 raise ValueError(
                     "Torsion", [a1, a2, a3, a4], "found ", found, " entries"
                 )
-                # print 'WRONG',[a1,a2,a3,a4],'\t found ',found,' entries'
+                # print('WRONG',[a1,a2,a3,a4],'\t found ',found,' entries')
         if questionable != 0:
-            print "made ", questionable, " questionable dihedral substitutions"
+            print("made ", questionable, " questionable dihedral substitutions")
         return dihedral_coeffs
 
     def match_impropers(self, improper_types):
@@ -352,7 +352,7 @@ class Parameterise(object):
                 raise ValueError(
                     "Improper", centre, neighbours, "found ", found, " entries"
                 )
-                # print 'WRONG',centre,neighbours,'\t found ',found,' entries'
+                # print('WRONG',centre,neighbours,'\t found ',found,' entries')
         return improper_coeffs
 
     def retrieve_ff_data(self, forcefield):

@@ -1,4 +1,4 @@
-from sim import Sim
+from .sim import Sim
 import numpy as np
 import copy
 
@@ -45,9 +45,9 @@ class Combine(Sim):
         for attr in ["bonds", "angles", "dihedrals", "impropers"]:
             attr1 = getattr(sim1, attr)
             attr2 = getattr(sim2, attr) + len(getattr(sim1, "coords"))
-            # print attr,len(attr1),len(attr2)
+            # print(attr,len(attr1),len(attr2))
             setattr(self, attr, self.stack(attr1, attr2))
-            # print len(getattr(self,attr))
+            # print(len(getattr(self,attr)))
 
         for attr in [
             "atom_charges",
@@ -76,7 +76,7 @@ class Combine(Sim):
             for j in range(len(types1)):
                 def1 = [sim1.vdw_defs[a] for a in types1[j]]
                 if (def1 == def2) or (def1 == list(reversed(def2))):
-                    print "matched", coeff, i + 1, j + 1, def1, def2
+                    print("matched", coeff, i + 1, j + 1, def1, def2)
                     exists_in_sim1 += 1
                     new_labels = self.replace_labels(
                         getattr(sim2, labels), i + 1, j + 1

@@ -1,2 +1,2 @@
-from base import Reactor
-from oxidiser import Oxidiser
+from .base import Reactor
+from .oxidiser import Oxidiser

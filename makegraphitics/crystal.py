@@ -1,6 +1,6 @@
-from lattice import Lattice
-from connector import Connector
-from sim import Sim
+from .lattice import Lattice
+from .connector import Connector
+from .sim import Sim
 
 
 class Crystal(Sim):

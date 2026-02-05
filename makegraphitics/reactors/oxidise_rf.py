@@ -15,7 +15,7 @@ with open(oxidise_data, "r") as f:
     count = 0
     for line in f:
         count += 1
-    N = count / 3
+    N = int(count / 3)
     f.seek(0)
     for i in range(N):
         rate = float(f.readline())
@@ -114,14 +114,14 @@ if __name__ == "__main__":
 
     from scipy.optimize import curve_fit
 
-    print p0
+    print(p0)
     popt, pcov = curve_fit(fit_empirical, reactions, Y)
-    print popt
-    print pcov
+    print(popt)
+    print(pcov)
 
     for i in range(len(reactions)):
-        print Y[i], fit_empirical(reactions[i], *popt)[0], rf.predict([X[i]])[0]
+        print(Y[i], fit_empirical(reactions[i], *popt)[0], rf.predict([X[i]])[0])
 
     fi = rf.feature_importances_
     for i, j in zip(attributes, fi):
-        print i, j
+        print(i, j)

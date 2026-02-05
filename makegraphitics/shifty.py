@@ -1,6 +1,6 @@
 import numpy as np
 from math import cos, sin, pi
-from write_coords import Writer
+from .write_coords import Writer
 
 
 class Shifter(object):

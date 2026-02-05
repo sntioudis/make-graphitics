@@ -1,6 +1,6 @@
 import numpy as np
-from oxidise_rf import init_random_forest
-from base import Reactor
+from .oxidise_rf import init_random_forest
+from .base import Reactor
 
 
 class Oxidiser(Reactor):
@@ -147,7 +147,7 @@ class Oxidiser(Reactor):
         return partitions
 
     def oxidise_edges(self, sim):
-        print "Oxidising edges"
+        print("Oxidising edges")
         edge_OH = 0
         carboxyl = 0
         charge_carboxyl_sites = []
@@ -190,19 +190,19 @@ class Oxidiser(Reactor):
             self.add_charged_carboxyl(sim, site, counterion)
             charged_carboxyls += 1
 
-        print "added:"
-        print edge_OH, "\tOH"
-        print carboxyl - charged_carboxyls, "\tCOOH"
-        print charged_carboxyls,"\tCOO-"
+        print("added:")
+        print(edge_OH, "\tOH")
+        print(carboxyl - charged_carboxyls, "\tCOOH")
+        print(charged_carboxyls,"\tCOO-")
         if self.counterion:
-            print n_counterions, self.counterion, "counterions"
-        print "----------------------"
-        print
+            print(n_counterions, self.counterion, "counterions")
+        print("----------------------")
+        print( )
 
         return edge_OH, carboxyl
 
     def oxidise(self, crystal):
-        print "Oxidising basal plane"
+        print("Oxidising basal plane")
         OH_added = 0
         epoxy_added = 0
         time_elapsed = 0  # since last new island
@@ -225,12 +225,12 @@ class Oxidiser(Reactor):
                 time_elapsed = 0
                 site, above, dt = self.find_site(crystal, new_island=True)
                 nodes += 1
-                print "new_island accepted,", nodes, "nodes (", new_island, ")"
+                print("new_island accepted,", nodes, "nodes (", new_island, ")")
             else:
                 site, above, dt = self.find_site(crystal)
                 time_elapsed += dt
             if above == 0:
-                print "Could not reach C/O ratio:", self.target_ratio
+                print("Could not reach C/O ratio:", self.target_ratio)
                 break
 
             # oxygenate at site,above
@@ -258,7 +258,7 @@ class Oxidiser(Reactor):
             # outputs
             if not self.Noxygens % 20:
                 oxygens_to_add = int(self.Ncarbons / self.target_ratio)
-                print self.Noxygens, "/", oxygens_to_add, "\toxygens added\t", nodes, "nodes"
+                print(self.Noxygens, "/", oxygens_to_add, "\toxygens added\t", nodes, "nodes")
             if self.video_xyz and not self.Noxygens % self.video_xyz:
                 self.output_snapshot(crystal)
             if self.video_lammps and not self.Noxygens % self.video_lammps:
@@ -266,15 +266,15 @@ class Oxidiser(Reactor):
                     crystal, format_="lammps", filename=str(self.Noxygens)
                 )
 
-        print OH_added, "\tOH were added"
-        print epoxy_added, "\tepoxy were added"
+        print(OH_added, "\tOH were added")
+        print(epoxy_added, "\tepoxy were added")
         if epoxy_added != 0:
-            print "OH/epoxy = ", float(OH_added) / (epoxy_added)
+            print("OH/epoxy = ", float(OH_added) / (epoxy_added))
         else:
-            print "OH/epoxy = inf"
-        print nodes, "nodes"
-        print "=========="
-        print "C/O = ", self.Ncarbons, "/", self.Noxygens, "=", self.ratio()
+            print("OH/epoxy = inf")
+        print(nodes, "nodes")
+        print("==========")
+        print("C/O = ", self.Ncarbons, "/", self.Noxygens, "=", self.ratio())
 
     def ratio(self):
         if self.Noxygens == 0:
@@ -468,7 +468,7 @@ class Oxidiser(Reactor):
 
         totals_above = np.zeros(self.n_partitions)
         totals_below = np.zeros(self.n_partitions)
-        for i in xrange(self.n_partitions):
+        for i in range(self.n_partitions):
             totals_above[i] = np.sum(
                 reactivity_above[self.partitions[i][0] : self.partitions[i][1]]
             )
@@ -772,7 +772,7 @@ class Oxidiser(Reactor):
                         removed += 1
                         OH_added_cycle += 1
 
-            print "cycle: islands removed", removed, " with ", epoxy_added_cycle, " epoxy and ", OH_added_cycle, " OH"
+            print("cycle: islands removed", removed, " with ", epoxy_added_cycle, " epoxy and ", OH_added_cycle, " OH")
             OH_added += OH_added_cycle
             epoxy_added += epoxy_added_cycle
 

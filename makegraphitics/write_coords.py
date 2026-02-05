@@ -86,7 +86,7 @@ class Writer(object):
                     atom_label = str(self.atom_labels[i]) + " "
 
                 outfile.write(atom_label + xyz + "\n")
-            print "Coords written to " + str(filename)
+            print("Coords written to " + str(filename))
 
     def write_reaxff(self, filename="data.lammps"):
         # atom_type charge
@@ -144,7 +144,7 @@ class Writer(object):
                     + "\n "  # z
                 )
 
-            print "Coords written to " + filename
+            print("Coords written to " + filename)
 
     def write_lammps(self, filename="data.lammps"):
         # atom_type full
@@ -342,4 +342,4 @@ class Writer(object):
                         + " \n"
                     )
 
-            print "Coords written to " + filename
+            print("Coords written to " + filename)

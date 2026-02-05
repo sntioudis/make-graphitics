@@ -1,6 +1,6 @@
 import numpy as np
 from math import pi, cos
-from base import Molecule
+from .base import Molecule
 
 
 class Graphene(Molecule):

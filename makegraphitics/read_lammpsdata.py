@@ -1,5 +1,5 @@
 import numpy as np
-from sim import Sim
+from .sim import Sim
 
 
 class ReadLammpsData(Sim):
@@ -64,7 +64,7 @@ class ReadLammpsData(Sim):
 
     def analyse(self, line, datafile):
         def could_not_read(unknown):
-            print "Could not decipher: ", unknown, " on line ", self.count
+            print("Could not decipher: ", unknown, " on line ", self.count)
 
         def is_number(s):
             try:
@@ -138,7 +138,7 @@ class ReadLammpsData(Sim):
                 else:
                     could_not_read(line)
         elif len(line) == 2:
-            print "reading " + l + " Coeffs"
+            print("reading " + l + " Coeffs")
             self.read(datafile)
             name = line[0].lower() + "_" + line[1].lower()
             N = getattr(self, Ncoeff.get(l))
@@ -149,7 +149,7 @@ class ReadLammpsData(Sim):
             if not func:
                 could_not_read(line)
             else:
-                print "reading " + l
+                print("reading " + l)
                 self.read(datafile)
                 func(datafile)
 
@@ -174,7 +174,7 @@ class ReadLammpsData(Sim):
             self.atom_charges[i] = line[3]
 
     def read_velocities(self, datafile):
-        print "--- Ignoring Velocities --- noone cares"
+        print("--- Ignoring Velocities --- noone cares")
         for i in range(self.Natoms):
             line = self.read(datafile)
 
@@ -223,4 +223,4 @@ class ReadLammpsData(Sim):
             try:
                 a = getattr(self, attribute)
             except AttributeError:
-                print "WARNING: undefined " + attribute
+                print("WARNING: undefined " + attribute)

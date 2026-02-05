@@ -131,7 +131,7 @@ class Connector(object):
                 if flag1 and flag2:
                     improper_labels.append(i + 1)
         if len(improper_labels) != len(impropers):
-            print len(improper_labels), len(impropers)
+            print(len(improper_labels), len(impropers))
             raise ValueError("improper assignment went wrong", len(improper_labels))
         return improper_labels
 

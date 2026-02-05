@@ -21,14 +21,14 @@ class OPLS_Reader(object):
                 else:
                     pass
                     # blank line
-                    # print 'BLANK',line
+                    # print('BLANK',line)
 
     def readline(self, line):
         func = self.main.get(line[0:8], False)
         if not func:
             pass
             # data we can't parse
-            # print 'WRONG',line
+            # print('WRONG',line)
         else:
             func(line)
 

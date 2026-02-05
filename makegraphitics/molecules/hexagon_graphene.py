@@ -1,6 +1,6 @@
 from math import pi, cos, sin, sqrt
 import numpy as np
-from base import Molecule
+from .base import Molecule
 
 
 class Hexagon_Graphene(Molecule):
@@ -31,7 +31,7 @@ class Hexagon_Graphene(Molecule):
         cos_CC = cos(pi / 6.0) * CC
         sin_CC = 0.5 * CC
 
-        atoms_per_section = self.natoms / 6
+        atoms_per_section = int(self.natoms / 6)
         section = np.empty((atoms_per_section, 3))
 
         global atom
@@ -98,7 +98,7 @@ class Hexagon_Graphene(Molecule):
 
     def assign_atom_labels(self, lattice_dimensions):
         atom_labels = []
-        segment_carbons = [1] * ((self.natoms - (self.order * 6)) / 6)
+        segment_carbons = [1] * int((self.natoms - (self.order * 6)) / 6)
         segment_hydrogens = [2] * (self.order)
         for z in range(lattice_dimensions[2]):
             for i in range(6):
@@ -123,7 +123,7 @@ class Hexagon_Graphene(Molecule):
 
     def assign_bonds(self, lattice_dimensions):
         segment_bonds = []
-        natoms_section = self.natoms / 6
+        natoms_section = int(self.natoms / 6)
         natoms_passed = 0
         for ring in range(1, self.order):
             natoms_ring = (ring + 1) * 2 - 1

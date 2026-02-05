@@ -46,7 +46,7 @@ for i in [
     0,
     -1,
 ]:
-    print j
+    print()
     j += 1
     motif = mg.molecules.Hexagon_Graphene(5 + i * 2.44)
     next_layer = mg.Crystal(motif, [1, 1, 1])
