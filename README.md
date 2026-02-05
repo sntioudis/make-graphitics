@@ -24,7 +24,7 @@ Clone this repository, create a new conda environment using graphene-env.yml, an
 ```
 git clone https://github.com/sntioudis/make-graphitics
 cd make-graphitics
-conda env create -f environment.yml
+conda env create -f graphene-env.yml
 conda activate make_graphitics
 pip3 install .
 pytest
