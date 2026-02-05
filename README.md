@@ -1,11 +1,11 @@
 # Graphite, Graphene and Graphene Oxide Builder
 
-MakeGraphitics is a library to ceate various atomistic graphitic structures for molecular dynamics.
+MakeGraphitics is a library to create various atomistic graphitic structures for molecular dynamics.
 
 Available structures:
 - Hexagonal graphene flake
 - Rectangular graphene flake
-- Rectangular perodic graphene sheet (no edges)
+- Rectangular periodic graphene sheet (no edges)
 - Periodic graphite 
 - Graphene and graphite oxide
 
@@ -20,35 +20,32 @@ Automatically parameterise by forcefields:
 
 ## Install
 
-Clone this repository. Install using Python2.7. Run the tests to check the installation has worked.
+Clone this repository, create a new conda environment using graphene-env.yml and and install using python3
 ```
-git clone https://github.com/velocirobbie/make-graphitics
+git clone https://github.com/sntioudis/make-graphitics
 cd make-graphitics
-python setup.py install
+conda env create -f environment.yml
+conda activate make_graphitics
+pip3 install .
 pytest
 ```
 
-A conda environment is provided if you do not have the right packages. If you have conda set up, execute these commands to create a working python environment before the install setp.
-```
-conda env create --file graphene-env.yml
-conda activate graphene
-```
 
-Running `pytest` will create a bunch of unwanted output files. Sorry about this, I will try and tidy up the outputs soon. In the mean time you can remove with `rm *xyz *data`.
+Running `pytest` will create a bunch of unwanted output files. Sorry about this, I will try to tidy up the outputs soon. In the mean time you can remove with `rm *xyz *data`.
 
 ## Examples
 
 See the scripts in the `examples/` directory for a number of sample structures.
 
-1) Make a rectangular graphene sheet that extends through periodic boundaries. Parameterised with OPLS and outputs to .xyz for easy veiwing with VMD and a LAMMPS data file.
+1) Make a rectangular graphene sheet that extends through periodic boundaries. Parameterised with OPLS and outputs to .xyz for easy viewing with VMD and a LAMMPS data file.
 ```
-python2.7 graphene_sheet.py
+python3 graphene_sheet.py
 ```
-Size of the sheet can be specified in `graphene_sheet.py`.
+The size of the sheet can be specified in `graphene_sheet.py`.
 
-2) Make a hexagonal flake of graphene oxide. Parameterised with OPLS and outputs to .xyz for easy veiwing with VMD and a LAMMPS data file.
+2) Make a hexagonal flake of graphene oxide. Parameterised with OPLS and outputs to .xyz for easy viewing with VMD and a LAMMPS data file.
 ```
-python2.7 GO_flake.py
+python3 GO_flake.py
 ```
 There are several tunable parameters in `GO_flake.py` that you may be interested in. Including:
 - flake radius
@@ -64,23 +61,23 @@ The Oxidiser takes a graphitic structure and attempts to oxidise it by the proce
 
 2) The reactivity of every possible site is calculated. This is done by using a ranodom forest approach to extend the data set of GO reactivites given by Yang et al. We do not take into account the reactivity of the edges.
 
-3) A site is oxidised at random weighted by each site's reactivity. The chance of an oxidisation producing an alcohol or epoxy group on the surface is by default 50:50, but can be specified by passing Oxidiser the optional argument: `surface_OHratio = 0.5`
+3) A site is oxidised at random, weighted by each site's reactivity. The chance of an oxidisation producing an alcohol or epoxy group on the surface is by default 50:50, but can be specified by passing Oxidiser the optional argument: `surface_OHratio = 0.5`
 
 4) The time elapsed between oxidations is estimated from the reactivity of the site that has been oxidised.
 
 5) New nodes are added proportionally to `time_elapsed * new_island_freq`. Note this can be 0. The reasons for doing this are outlined in (Sinclair 2019).
 
-6) Steps 2-5 are repeated until the target C/O ratio is reached or no new sites are available, usually C/O ~ 1.7 . We recommend setting the target, `ratio`, to over 2 as this is what is seen experimentally.
+6) Steps 2-5 are repeated until the target C/O ratio is reached or no new sites are available, usually C/O ~ 1.7. We recommend setting the target, `ratio`, to over 2 as this is what is seen experimentally.
 
 ## Notes on Parameterisation
 
-Not all the bonded interactions that can occur in graphene oxide are included in the OPLS parameterisation. We make some neccesary like for like atom-type substitutions to get around this problem. It is not ideal but common practice in molecular dynamics. The substitutions used are outputed after a parameterisation step. Each substitution line outputs the origional atom types, the atom types used to parameterise them, and a summary string that you can use to find in the script `makegraphitics/params.py`. Substitutions keep atom types as close to the origional as possible e.g. replaces an aromatic C with an alkene C, whcih are both sp2 carbon atoms. 
+Not all the bonded interactions that can occur in graphene oxide are included in the OPLS parameterisation. We make some neccesary like for like atom-type substitutions to get around this problem. It is not ideal but common practice in molecular dynamics. The substitutions used are outputed after a parameterisation step. Each substitution line outputs the original atom types, the atom types used to parameterise them, and a summary string that you can use to find in the script `makegraphitics/params.py`. Substitutions keep atom types as close to the origional as possible,e.g. replaces an aromatic C with an alkene C, whcih are both sp2 carbon atoms. 
 
 ## More structure examples
 
 More examples of building structures with this script are in the `examples` directory.
 
-Note that differenct structures can be combined into one simulation object with `Combine`. Also coordinates can be manipulated before writing to a lammps file. An examploe of this is shown in `peel_sim.py`.
+Note that different structures can be combined into one simulation object with `Combine`. Also coordinates can be manipulated before writing to a lammps file. An example of this is shown in `peel_sim.py`.
 
 # Citing
 
@@ -88,11 +85,11 @@ The work contained here has been published in some of my own papers e.g.
 
  - Graphene–Graphene Interactions: Friction, Superlubricity, and Exfoliation https://doi.org/10.1002/adma.201705791
 
- - Modeling Nanostructure in Graphene Oxide: Inhomogeneity and the Percolation Threshold https://doi.org/10.1021/acs.jcim.9b00114
+ - Modelling Nanostructure in Graphene Oxide: Inhomogeneity and the Percolation Threshold https://doi.org/10.1021/acs.jcim.9b00114
 
  - The Role of Graphene in Enhancing the Material Properties of Thermosetting Polymers https://doi.org/10.1002/adts.201800168
 
-I would appreciate a citation if you any of the code in any published work :) You could cite the graphene oxide structure paper, this github page (if the journal allows), or the latest release on the zenodo repository
+I would appreciate a citation if you use any of the codes in any published work :) You could cite the graphene oxide structure paper, this GitHub page (if the journal allows), or the latest release on the Zenodo repository
 
 ```
 @article{sinclair2019modelling,
