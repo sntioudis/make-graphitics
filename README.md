@@ -27,11 +27,7 @@ cd make-graphitics
 conda env create -f graphene-env.yml
 conda activate make_graphitics
 pip3 install .
-pytest
 ```
-
-
-Running `pytest` will create a bunch of unwanted output files. Sorry about this, I will try to tidy up the outputs soon. In the mean time you can remove with `rm *xyz *data`.
 
 ## Examples
 
