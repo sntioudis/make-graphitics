@@ -20,7 +20,7 @@ Automatically parameterise by forcefields:
 
 ## Install
 
-Clone this repository, create a new conda environment using graphene-env.yml and and install using python3
+Clone this repository, create a new conda environment using graphene-env.yml, and install using python3
 ```
 git clone https://github.com/sntioudis/make-graphitics
 cd make-graphitics
