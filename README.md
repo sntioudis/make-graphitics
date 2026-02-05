@@ -29,6 +29,11 @@ conda activate make_graphitics
 pip3 install .
 ```
 
+Always test before use and report and unexpected behaviour
+```
+pytest
+```
+
 ## Examples
 
 See the scripts in the `examples/` directory for a number of sample structures.
