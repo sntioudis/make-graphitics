@@ -79,7 +79,6 @@ class Graphite(Molecule):
 
                     # Add bonds within cell
                     i = self.index_cell([x, y, z], lattice_dimensions, 8)
-                    '''
                     bonds = np.vstack((bonds, internal_bonds + i))
                     # Add bonds that cross cell boundries
                     bonds = self.add_cross_bond(
@@ -102,44 +101,21 @@ class Graphite(Molecule):
                         lattice_dimensions, ycell_position, [7, 8], bonds, i
                     )
 
-                    '''
-                    bonds = np.vstack((bonds, internal_bonds + i,
-                    	self.add_cross_bond(
-                            lattice_dimensions, xcell_position, [3, 2], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, xycell_position, [4, 1], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, ycell_position, [4, 1], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, xcell_position, [7, 6], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, xcell_position, [8, 5], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, ycell_position, [7, 8], i
-                        )
-                    ))
         return bonds
 
     def index_cell(self, cell_position, lattice_dimensions, atoms_per_cell):
-                    '''
         N = atoms_per_cell
         total = cell_position[2] * N
         total += cell_position[1] * lattice_dimensions[2] * N
         total += cell_position[0] * lattice_dimensions[2] * lattice_dimensions[1] * N
         return total
-        '''
-        [x,y,z] = cell_position
-        [u,v,w] = lattice_dimensions
-        return ((w * (x * v + y )) + z) * atoms_per_cell
 
-    #def add_cross_bond(self, lattice_dimensions, cell_position, atoms, bonds, i):
-    def add_cross_bond(self, lattice_dimensions, cell_position, atoms, i ):
+    def add_cross_bond(self, lattice_dimensions, cell_position, atoms, bonds, i):
         # cell_position : the adjoining cell
         # atoms [i,j]: ith atom in cell, jth atom in adjoining
         atoms[0] += i
         atoms[1] += self.index_cell(cell_position, lattice_dimensions, 8)
-        #return np.vstack((bonds, atoms))
-        return atoms
+        return np.vstack((bonds, atoms))
 
     def connection_types(self):
         bond_types = [[1, 1]]
