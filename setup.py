@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="makegraphitics",
-    version="0.2",
+    version="0.2.1",
     description="""Library to build graphene and graphite based structures
-                   for atomistic simulation""",
+                   for atomistic simulation. Updated to allow use with python3""",
     url="https://github.com/velocirobbie/make-graphitics",
     author="Robert C Sinclair",
     packages=find_packages(),
