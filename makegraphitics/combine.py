@@ -45,9 +45,7 @@ class Combine(Sim):
         for attr in ["bonds", "angles", "dihedrals", "impropers"]:
             attr1 = getattr(sim1, attr)
             attr2 = getattr(sim2, attr) + len(getattr(sim1, "coords"))
-            # print(attr,len(attr1),len(attr2))
             setattr(self, attr, self.stack(attr1, attr2))
-            # print(len(getattr(self,attr)))
 
         for attr in [
             "atom_charges",

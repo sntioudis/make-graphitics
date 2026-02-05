@@ -62,8 +62,8 @@ class Sim(object):
             if hasattr(self, attr):
                 assert len(getattr(self, attr)) == n_atoms, attr
         if abs(np.sum(self.atom_charges)) > 0.01:
-            print("WARNING: charges do not sum to zero")
-            np.sum(self.atom_charges)
+            print("WARNING: charges do not sum to zero",\)
+                  np.sum(self.atom_charges)
 
     def crystal_params(self):
         path = os.path.dirname(__file__) + "/params/"

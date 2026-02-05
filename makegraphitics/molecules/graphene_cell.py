@@ -3,40 +3,33 @@ from math import pi, cos
 from .base import Molecule
 
 
-class Graphite(Molecule):
-    # Handling AB graphite with orthorhombic unit cell (8 atom)
+class Graphene(Molecule):
     def __init__(self, forcefield="OPLS"):
         config = self.crystal_params()
 
         self.CC = config[forcefield]["CC"]
         self.layer_gap = config[forcefield]["layer_gap"]
 
-    # orthorhombic unitcell lattice parameters
     def cell_shape(self):
         a = 2.0 * self.CC * cos(pi / 6.0)
         b = 3.0 * self.CC
-        c = 2.0 * self.layer_gap
+        c = self.layer_gap
         cell_dimensions = [a, b, c]
         return cell_dimensions
 
     def cell_coords(self):
         CC = self.CC
-        layer_gap = self.layer_gap
         cos_CC = cos(pi / 6.0) * CC
         sin_CC = 0.5 * CC
         C1 = [0, 0, 0]
         C2 = [0, CC, 0]
         C3 = [cos_CC, CC + sin_CC, 0]
         C4 = [cos_CC, 2 * CC + sin_CC, 0]
-        C5 = [0, CC, layer_gap]
-        C6 = [0, CC * 2, layer_gap]
-        C7 = [cos_CC, 2 * CC + sin_CC, layer_gap]
-        C8 = [cos_CC, sin_CC, layer_gap]
-        cell_coords = np.array([C1, C2, C3, C4, C5, C6, C7, C8])
+        cell_coords = np.array([C1, C2, C3, C4])
         return cell_coords
 
     def assign_molecules(self, lattice_dimensions):
-        unit_cell_molecule_label = [1, 1, 1, 1, 2, 2, 2, 2]
+        unit_cell_molecule_label = [1, 1, 1, 1]
         molecule_labels = []
         for x in range(lattice_dimensions[0]):
             for y in range(lattice_dimensions[1]):
@@ -47,7 +40,7 @@ class Graphite(Molecule):
 
     def assign_atom_labels(self, lattice_dimensions):
         atom_labels = []
-        cell_labels = [1, 1, 1, 1, 1, 1, 1, 1]
+        cell_labels = [1, 1, 1, 1]
         for x in range(lattice_dimensions[0]):
             for y in range(lattice_dimensions[1]):
                 for z in range(lattice_dimensions[2]):
@@ -56,7 +49,7 @@ class Graphite(Molecule):
 
     def assign_atom_charges(self, lattice_dimensions, q):
         atom_charges = []
-        cell_charges = [0, 0, 0, 0, 0, 0, 0, 0]
+        cell_charges = [0, 0, 0, 0]
         for x in range(lattice_dimensions[0]):
             for y in range(lattice_dimensions[1]):
                 for z in range(lattice_dimensions[2]):
@@ -64,7 +57,7 @@ class Graphite(Molecule):
         return atom_charges
 
     def assign_bonds(self, lattice_dimensions):
-        internal_bonds = np.array([[1, 2], [2, 3], [3, 4], [5, 6], [6, 7], [8, 5]])
+        internal_bonds = np.array([[1, 2], [2, 3], [3, 4]])
         bonds = np.empty((0, 2), dtype=int)
         # loop through all cells
         for x in range(lattice_dimensions[0]):
@@ -78,8 +71,7 @@ class Graphite(Molecule):
                     ) = find_adjacent_cells(cell_position, lattice_dimensions)
 
                     # Add bonds within cell
-                    i = self.index_cell([x, y, z], lattice_dimensions, 8)
-                    '''
+                    i = self.index_cell([x, y, z], lattice_dimensions, 4)
                     bonds = np.vstack((bonds, internal_bonds + i))
                     # Add bonds that cross cell boundries
                     bonds = self.add_cross_bond(
@@ -92,54 +84,21 @@ class Graphite(Molecule):
                         lattice_dimensions, ycell_position, [4, 1], bonds, i
                     )
 
-                    bonds = self.add_cross_bond(
-                        lattice_dimensions, xcell_position, [7, 6], bonds, i
-                    )
-                    bonds = self.add_cross_bond(
-                        lattice_dimensions, xcell_position, [8, 5], bonds, i
-                    )
-                    bonds = self.add_cross_bond(
-                        lattice_dimensions, ycell_position, [7, 8], bonds, i
-                    )
-                    '''
-                    bonds = np.vstack((bonds, internal_bonds + i,
-                    	self.add_cross_bond(
-                            lattice_dimensions, xcell_position, [3, 2], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, xycell_position, [4, 1], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, ycell_position, [4, 1], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, xcell_position, [7, 6], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, xcell_position, [8, 5], i
-                        ), self.add_cross_bond(
-                            lattice_dimensions, ycell_position, [7, 8], i
-                        )
-                    ))
-
         return bonds
 
     def index_cell(self, cell_position, lattice_dimensions, atoms_per_cell):
-        '''
         N = atoms_per_cell
         total = cell_position[2] * N
         total += cell_position[1] * lattice_dimensions[2] * N
         total += cell_position[0] * lattice_dimensions[2] * lattice_dimensions[1] * N
         return total
-        '''
-        [x,y,z] = cell_position
-        [u,v,w] = lattice_dimensions
-        return ((w * (x * v + y)) + z) * atoms_per_cell
 
-    #def add_cross_bond(self, lattice_dimensions, cell_position, atoms, bonds, i):
-    def add_cross_bond(self, lattice_dimensions, cell_position, atoms, i):
+    def add_cross_bond(self, lattice_dimensions, cell_position, atoms, bonds, i):
         # cell_position : the adjoining cell
         # atoms [i,j]: ith atom in cell, jth atom in adjoining
         atoms[0] += i
-        atoms[1] += self.index_cell(cell_position, lattice_dimensions, 8)
-        #return np.vstack((bonds, atoms))
-        return atoms
+        atoms[1] += self.index_cell(cell_position, lattice_dimensions, 4)
+        return np.vstack((bonds, atoms))
 
     def connection_types(self):
         bond_types = [[1, 1]]

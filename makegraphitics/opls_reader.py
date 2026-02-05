@@ -20,15 +20,13 @@ class OPLS_Reader(object):
                     self.readline(line)
                 else:
                     pass
-                    # blank line
-                    # print('BLANK',line)
+
 
     def readline(self, line):
         func = self.main.get(line[0:8], False)
         if not func:
             pass
-            # data we can't parse
-            # print('WRONG',line)
+
         else:
             func(line)
 

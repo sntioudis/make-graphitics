@@ -139,7 +139,6 @@ class Parameterise(object):
             a2 = self.type_defs[angle_types[i][1]]
             a3 = self.type_defs[angle_types[i][2]]
             atoms = [a1, a2, a3]
-            # print(atoms, angle_types[i])
             angle_coeffs, found = search_angles(angle_data, atoms, angle_coeffs)
 
             if found == 0:
@@ -162,9 +161,8 @@ class Parameterise(object):
                         print(found, [a1, a2, a3], atoms, "made 13 -> 47 sub")
             if found != 1:
                 raise ValueError("WRONG", atoms, "\t found ", found, " entries")
-                # print('WRONG',atoms,'\t found ',found,' entries')
         if questionable_substitutions != 0:
-            print("made #", questionable_substitutions, " questionable angle subs")
+            print("made ", questionable_substitutions, " questionable angle subs")
         return angle_coeffs
 
     def match_dihedrals(self, dihedral_types):
@@ -237,8 +235,6 @@ class Parameterise(object):
             a3 = self.type_defs[dihedral_types[i][2]]
             a4 = self.type_defs[dihedral_types[i][3]]
             atoms = [a1, a2, a3, a4]
-            # print(atoms)
-
             dihedral_coeffs, found = search_dihedrals(
                 dihedral_data, atoms, dihedral_coeffs
             )
@@ -309,7 +305,6 @@ class Parameterise(object):
                 raise ValueError(
                     "Torsion", [a1, a2, a3, a4], "found ", found, " entries"
                 )
-                # print('WRONG',[a1,a2,a3,a4],'\t found ',found,' entries')
         if questionable != 0:
             print("made ", questionable, " questionable dihedral substitutions")
         return dihedral_coeffs
@@ -352,7 +347,6 @@ class Parameterise(object):
                 raise ValueError(
                     "Improper", centre, neighbours, "found ", found, " entries"
                 )
-                # print('WRONG',centre,neighbours,'\t found ',found,' entries')
         return improper_coeffs
 
     def retrieve_ff_data(self, forcefield):

@@ -15,7 +15,7 @@ with open(oxidise_data, "r") as f:
     count = 0
     for line in f:
         count += 1
-    N = int(count / 3)
+    N = count // 3
     f.seek(0)
     for i in range(N):
         rate = float(f.readline())
