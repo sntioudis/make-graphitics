@@ -1,6 +1,6 @@
 from math import sqrt
 import numpy as np
-from base import Molecule
+from .base import Molecule
 
 
 class Hexagon_Graphene_Sheet(Molecule):
@@ -159,4 +159,5 @@ class Hexagon_Graphene_Sheet(Molecule):
         angle_types = [[1, 1, 1]]
         dihedral_types = []
         improper_types = []
+
         return bond_types, angle_types, dihedral_types, improper_types
