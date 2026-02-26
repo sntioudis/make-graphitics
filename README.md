@@ -3,6 +3,7 @@
 MakeGraphitics is a library to create various atomistic graphitic structures for molecular dynamics.
 
 Available structures:
+- ADDED (26/02/2026): Hexagonal graphene flake
 - Hexagonal graphene flake
 - Rectangular graphene flake
 - Rectangular periodic graphene sheet (no edges)
