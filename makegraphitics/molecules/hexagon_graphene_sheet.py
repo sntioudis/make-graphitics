@@ -20,13 +20,13 @@ class Hexagon_Graphene_Sheet(Molecule):
         self.natoms = 2 * self.nx * self.ny
 
     # ----------------------------------------------------------
-    # Cell
+    # Cell (orthogonal box)
     # ----------------------------------------------------------
 
     def cell_shape(self):
         return [
             self.a * self.nx,
-            self.a * sqrt(3.0)/2.0 * self.ny,
+            1.5 * self.CC * self.ny,
             self.layer_gap
         ]
 
@@ -44,8 +44,8 @@ class Hexagon_Graphene_Sheet(Molecule):
         a2 = np.array([sqrt(3.0)/2.0*CC, 3.0/2.0*CC, 0.0])
 
         basis = [
-            np.array([0.0, 0.0, 0.0]),
-            np.array([sqrt(3.0)/2.0*CC, 0.5*CC, 0.0])
+            np.array([0.0, 0.0, 0.0]),                         # A
+            np.array([sqrt(3.0)/2.0*CC, 0.5*CC, 0.0])          # B
         ]
 
         for i in range(self.nx):
@@ -88,52 +88,55 @@ class Hexagon_Graphene_Sheet(Molecule):
         return atom_charges
 
     # ----------------------------------------------------------
-    # Bonds (analytical graphene connectivity)
+    # Bonds (analytical periodic graphene topology)
     # ----------------------------------------------------------
 
     def assign_bonds(self, lattice_dimensions):
 
-        coords = self.cell_coords()
-        box = self.cell_shape()
-
         bonds = []
-        cutoff = 1.1 * self.CC
 
-        for i in range(len(coords)):
-            for j in range(i + 1, len(coords)):
+        for i in range(self.nx):
+            for j in range(self.ny):
 
-                dx = coords[i][0] - coords[j][0]
-                dy = coords[i][1] - coords[j][1]
+                # Periodic wrapping
+                im = (i - 1) % self.nx
+                jm = (j - 1) % self.ny
 
-                # Periodic boundary conditions
-                dx -= box[0] * round(dx / box[0])
-                dy -= box[1] * round(dy / box[1])
+                # Current cell atom indices (1-based indexing)
+                base = 2 * (i * self.ny + j)
+                A = base + 1
+                B = base + 2
 
-                dist = np.sqrt(dx*dx + dy*dy)
+                # 1) Bond inside unit cell
+                bonds.append([A, B])
 
-                if dist < cutoff:
-                    bonds.append([i + 1, j + 1])
+                # 2) A → B in (i-1, j)
+                base_im = 2 * (im * self.ny + j)
+                bonds.append([A, base_im + 2])
+
+                # 3) A → B in (i, j-1)
+                base_jm = 2 * (i * self.ny + jm)
+                bonds.append([A, base_jm + 2])
 
         return np.array(bonds, dtype=int)
 
     # ----------------------------------------------------------
-    # Angles (each carbon has 3 neighbours)
+    # Angles
     # ----------------------------------------------------------
 
     def assign_angles(self, lattice_dimensions):
 
-        angles = []
         bonds = self.assign_bonds(lattice_dimensions)
 
-        # Build adjacency list
         adjacency = {i+1: [] for i in range(self.natoms)}
 
         for b in bonds:
             adjacency[b[0]].append(b[1])
             adjacency[b[1]].append(b[0])
 
-        for atom in adjacency:
-            neighbours = adjacency[atom]
+        angles = []
+
+        for atom, neighbours in adjacency.items():
             for i in range(len(neighbours)):
                 for j in range(i+1, len(neighbours)):
                     angles.append([neighbours[i], atom, neighbours[j]])
